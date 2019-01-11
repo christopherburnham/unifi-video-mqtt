@@ -36,12 +36,11 @@ The installation should be done on your server that is running Unifi video
 
 Debian based install
 ```
-apt install -y inotify-tools mosquitto-clients
+apt install -y inotify-tools mosquitto-clients git
 cd /tmp
-git clone https://github.com/terafin/unifi-video-mqtt.git
+git clone https://github.com/terafin/unifi-video-mqtt.git /tmp/unifi-protect-mqtt
 cd /tmp/unifi-protect-mqtt
 cp unifi-protect-mqtt.sh /usr/local/bin
-chown unifi-protect:unifi-video /usr/local/bin/unifi-protect-mqtt.sh
 chmod a+x /usr/local/bin/unifi-protect-mqtt.sh
 cp unifi-protect-mqtt.service /etc/systemd/system
 systemctl daemon-reload

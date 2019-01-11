@@ -8,9 +8,13 @@ MQTT_SERVER="10.0.1.X"
 MQTT_PORT="1883"
 MQTT_TOPIC_BASE="/camera/motion"
 
+MQTT_ON_PAYLOAD="ON"
+MQTT_OFF_PAYLOAD="OFF"
+
 # MQTT User/Pass Vars, only use if needed
 #MQTT_USER="YOUR_USERNAME"
 #MQTT_PASS="YOUR_PASSWORD"
+#MQTT_ID="yourid"  ## To make it work with hassio
 
 PREVIOUS_MESSAGE=""
 
@@ -47,10 +51,10 @@ while inotifywait -e modify $UNIFI_MOTION_LOG; do
 
         if [[ $LAST_EVENT == "start" ]]; then
             echo " * Motion started on $LAST_CAM"
-            mosquitto_pub -h $MQTT_SERVER -p $MQTT_PORT $MQTT_USER_PASS -r $MQTT_ID_OPT -t $MQTT_TOPIC_BASE/$LAST_CAM -m "1" &
+            mosquitto_pub -h $MQTT_SERVER -p $MQTT_PORT $MQTT_USER_PASS -r $MQTT_ID_OPT -t $MQTT_TOPIC_BASE/$LAST_CAM -m "$MQTT_ON_PAYLOAD" &
         else
             echo " * Motion stopped on $LAST_CAM"
-            mosquitto_pub -h $MQTT_SERVER -p $MQTT_PORT $MQTT_USER_PASS -r $MQTT_ID_OPT -t $MQTT_TOPIC_BASE/$LAST_CAM -m "0" &
+            mosquitto_pub -h $MQTT_SERVER -p $MQTT_PORT $MQTT_USER_PASS -r $MQTT_ID_OPT -t $MQTT_TOPIC_BASE/$LAST_CAM -m "$MQTT_OFF_PAYLOAD" &
         fi
     fi
 done
