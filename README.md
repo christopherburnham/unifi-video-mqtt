@@ -1,21 +1,31 @@
-# unifi-video-mqtt
+# unifi-protect-mqtt
 
 # Introduction
-This script can run on your Unifi Video server and push MQTT messages to a broker when motion is detected.
+This script can run on your Unifi Protect server and push MQTT messages to a broker when motion is detected.
 
-This can be useful for systems like Homeassistant that are lacking motion detection integration with Unifi Video.
+This can be useful for systems like Homeassistant that are lacking motion detection integration with Unifi Protect.
 
 Currently, the script is only setup for one camera but others can be added easily by modifying the script.
 
 # Reference
-Unifi Video writes to */var/log/unifi-video/motion.log* and it ouputs logs like this.  This script parses this log:
+Unifi Protect writes to */srv/unifi-protect/logs/events.cameras.log* and it ouputs logs like this.  This script parses this log:
 ```
-1529536461.847 2018-06-20 19:14:21.847/EDT: INFO   Camera[F0xxxxxxxxxx] type:start event:13 clock:11856432 (Front Door) in ApplicationEvtBus-7
-1529536479.865 2018-06-20 19:14:39.865/EDT: INFO   Camera[F0xxxxxxxxxx] type:stop event:13 clock:11874454 (Front Door) in ApplicationEvtBus-16
+2019-01-11T15:35:36.653Z - verbose: motion.start Main [802AA84EXXXX @ 10.0.1.X] 1547220936627
+2019-01-11T15:35:43.117Z - verbose: motion.stop Main [802AA84EXXXX @ 10.0.1.X] 1547220945050
+{ clockBestMonotonic: 42814557,
+  clockBestWall: 1547220936734,
+  clockMonotonic: 42827321,
+  clockWall: 1547220943050,
+  edgeType: 'stop',
+  eventId: 12,
+  eventType: 'motion',
+  levels: { '1': 25 },
+  motionHeatmap: 'heatmap_00000012.png',
+  motionSnapshot: 'motionsnap_00000012.jpg' }
 ```
 
 # Requirements
-* Unifi Video Server
+* Unifi Protect Server
 * MQTT Client
 * MQTT Server
 * Inotify Tools
@@ -28,18 +38,18 @@ Debian based install
 ```
 apt install -y inotify-tools mosquitto-clients
 cd /tmp
-git clone https://github.com/mzac/unifi-video-mqtt.git
-cd /tmp/unifi-video-mqtt
-cp unifi-video-mqtt.sh /usr/local/bin
-chown unifi-video:unifi-video /usr/local/bin/unifi-video-mqtt.sh
-chmod a+x /usr/local/bin/unifi-video-mqtt.sh
-cp unifi-video-mqtt.service /etc/systemd/system
+git clone https://github.com/terafin/unifi-video-mqtt.git
+cd /tmp/unifi-protect-mqtt
+cp unifi-protect-mqtt.sh /usr/local/bin
+chown unifi-protect:unifi-video /usr/local/bin/unifi-protect-mqtt.sh
+chmod a+x /usr/local/bin/unifi-protect-mqtt.sh
+cp unifi-protect-mqtt.service /etc/systemd/system
 systemctl daemon-reload
-systemctl enable unifi-video-mqtt
+systemctl enable unifi-protect-mqtt
 ```
 
 # IMPORTANT!!!
-Before starting the service, make sure to edit */usr/local/bin/unifi-video-mqtt.sh* with your specific
+Before starting the service, make sure to edit */usr/local/bin/unifi-protect-mqtt.sh* with your specific
 settings:
 
 ```
@@ -60,7 +70,7 @@ CAM1_ID="F0xxxxxxxxxx"
 
 Test it to make sure it works:
 ```
-/usr/local/bin/unifi-video-mqtt
+/usr/local/bin/unifi-protect-mqtt
 ```
 
 Create some motion on your camera and subscribe to your MQTT server and see if you see motion:
@@ -73,5 +83,5 @@ camera/motion/front_door off
 
 Once all changes are done, go ahead and start the daemon
 ```
-systemctl start unifi-video-mqtt
+systemctl start unifi-protect-mqtt
 ```

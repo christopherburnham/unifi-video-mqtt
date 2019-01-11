@@ -1,13 +1,13 @@
 [Unit]
-Description=Unifi Video Motion Detection to MQTT
+Description=Unifi Protect Motion Detection to MQTT
 After=network.target
 
 [Service]
-User=unifi-video
+User=unifi-protect
 Restart=always
 RestartSec=5
 Type=simple
-ExecStart=/usr/local/bin/unifi-video-mqtt.sh
+ExecStart=/usr/local/bin/unifi-protect-mqtt.sh
 TimeoutStopSec=20
 
 [Install]
