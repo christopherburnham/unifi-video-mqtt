@@ -5,8 +5,6 @@ This script can run on your Unifi Protect server and push MQTT messages to a bro
 
 This can be useful for systems like Homeassistant that are lacking motion detection integration with Unifi Protect.
 
-Currently, the script is only setup for one camera but others can be added easily by modifying the script.
-
 # Reference
 Unifi Protect writes to */srv/unifi-protect/logs/events.cameras.log* and it ouputs logs like this.  This script parses this log:
 ```
@@ -25,16 +23,15 @@ Unifi Protect writes to */srv/unifi-protect/logs/events.cameras.log* and it oupu
 ```
 
 # Requirements
-* Unifi Protect Server
+* Unifi CloudKey G2+
 * MQTT Client
 * MQTT Server
 * Inotify Tools
 
 # Installation
 
-The installation should be done on your server that is running Unifi video
+The installation should be done on your Cloud Key G2
 
-Debian based install
 ```
 apt install -y inotify-tools mosquitto-clients git
 cd /tmp
@@ -55,16 +52,16 @@ settings:
 # MQTT Vars
 MQTT_SERVER="192.168.x.x"
 MQTT_PORT="1883"
-MQTT_TOPIC_BASE="camera/motion"
+MQTT_TOPIC_BASE="/camera/motion"
+
+MQTT_ON_PAYLOAD="ON"
+MQTT_OFF_PAYLOAD="OFF"
 
 # MQTT User/Pass Vars, only use if needed
 #MQTT_USER="username"
 #MQTT_PASS="password"
 #MQTT_ID="yourid"  ## To make it work with hassio
 
-# Camera Defs
-CAM1_NAME="camera_name"
-CAM1_ID="F0xxxxxxxxxx"
 ```
 
 Test it to make sure it works:
@@ -76,8 +73,8 @@ Create some motion on your camera and subscribe to your MQTT server and see if y
 
 ```
 root@pi3:~# mosquitto_sub -h 192.168.x.x -t "camera/motion/#" -v
-camera/motion/front_door on
-camera/motion/front_door off
+/camera/motion/front_door on
+/camera/motion/front_door off
 ```
 
 Once all changes are done, go ahead and start the daemon
