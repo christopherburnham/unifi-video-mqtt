@@ -1,6 +1,9 @@
 # unifi-protect-mqtt
 
 # Introduction
+
+Thanks to: mzac, for the unifi video version of this here: https://github.com/mzac/unifi-video-mqtt
+
 This script can run on your Unifi Protect server and push MQTT messages to a broker when motion is detected.
 
 This can be useful for systems like Homeassistant that are lacking motion detection integration with Unifi Protect.
