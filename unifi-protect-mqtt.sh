@@ -46,7 +46,7 @@ while inotifywait -e modify $UNIFI_MOTION_LOG; do
 
         PREVIOUS_MESSAGE="$LAST_MESSAGE"
 
-        LAST_CAM=`echo $LAST_MESSAGE | awk -F 'verbose: motion.' '{print $2}' | awk -F ' ' '{print $2}'`
+        LAST_CAM=`echo $LAST_MESSAGE | awk -F 'verbose: motion.' '{print $2}' | awk -F '[' '{print $1}' | cut -d ' ' -f2- | xargs | sed s/" "/_/g |  tr '[:upper:]' '[:lower:]' | sed -r 's/[^a-zA-Z0-9\-]+/_/g'`
         LAST_EVENT=`echo $LAST_MESSAGE | awk -F 'verbose: motion.' '{print $2}' | awk -F ' ' '{print $1}'`
 
         if [[ $LAST_EVENT == "start" ]]; then
