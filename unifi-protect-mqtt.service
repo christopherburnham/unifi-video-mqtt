@@ -3,7 +3,7 @@ Description=Unifi Protect Motion Detection to MQTT
 After=network.target
 
 [Service]
-User=ubnt
+User=unifi-protect
 Restart=always
 RestartSec=5
 Type=simple
