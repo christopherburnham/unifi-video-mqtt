@@ -36,6 +36,7 @@ Unifi Protect writes to */srv/unifi-protect/logs/events.cameras.log* and it oupu
 The installation should be done on your Cloud Key G2
 
 ```
+apt update
 apt install -y inotify-tools mosquitto-clients git
 cd /tmp
 git clone https://github.com/terafin/unifi-video-mqtt.git /tmp/unifi-protect-mqtt
@@ -69,7 +70,7 @@ MQTT_OFF_PAYLOAD="OFF"
 
 Test it to make sure it works:
 ```
-/usr/local/bin/unifi-protect-mqtt
+bash /usr/local/bin/unifi-protect-mqtt.sh
 ```
 
 Create some motion on your camera and subscribe to your MQTT server and see if you see motion:
