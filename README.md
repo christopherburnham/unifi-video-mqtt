@@ -1,5 +1,10 @@
 # unifi-protect-mqtt
 
+# Deprecated
+
+I highly recommend using this instead, it doesn't involve messing with your gateway at all:
+<https://github.com/terafin/mqtt-unifi-protect-bridge>
+
 # Introduction
 
 Thanks to: mzac, for the unifi video version of this here: https://github.com/mzac/unifi-video-mqtt
