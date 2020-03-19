@@ -1,10 +1,5 @@
 # unifi-protect-mqtt
 
-# Deprecated
-
-I highly recommend using this instead, it doesn't involve messing with your gateway at all:
-<https://github.com/terafin/mqtt-unifi-protect-bridge>
-
 # Introduction
 
 Thanks to: mzac, for the unifi video version of this here: https://github.com/mzac/unifi-video-mqtt
@@ -44,7 +39,7 @@ The installation should be done on your Cloud Key G2
 apt update
 apt install -y inotify-tools mosquitto-clients git
 cd /tmp
-git clone https://github.com/terafin/unifi-video-mqtt.git /tmp/unifi-protect-mqtt
+git clone https://github.com/christopherburnham/unifi-video-mqtt.git /tmp/unifi-protect-mqtt
 cd /tmp/unifi-protect-mqtt
 cp unifi-protect-mqtt.sh /usr/local/bin
 chmod a+x /usr/local/bin/unifi-protect-mqtt.sh
@@ -61,7 +56,7 @@ settings:
 # MQTT Vars
 MQTT_SERVER="192.168.x.x"
 MQTT_PORT="1883"
-MQTT_TOPIC_BASE="/camera/motion"
+MQTT_TOPIC_BASE="homeassistant"
 
 MQTT_ON_PAYLOAD="ON"
 MQTT_OFF_PAYLOAD="OFF"
@@ -81,9 +76,12 @@ bash /usr/local/bin/unifi-protect-mqtt.sh
 Create some motion on your camera and subscribe to your MQTT server and see if you see motion:
 
 ```
-root@pi3:~# mosquitto_sub -h 192.168.x.x -t "camera/motion/#" -v
-/camera/motion/front_door on
-/camera/motion/front_door off
+root@tiger:/tmp# MQTT_SERVER="192.168.x.x"; MQTT_PORT="1883"; MQTT_USER="username"; MQTT_PASS="P@ssword!"; mosquitto_sub -h $MQTT_SERVER -p $MQTT_PORT -u $MQTT_USER -P $MQTT_PASS -t "homeassistant/binary_sensor/camera_motion/#" -v
+
+homeassistant/binary_sensor/camera_motion/front_porch/config {"name":"front_porch_camera_motion","device_class":"motion","state_topic":"homeassistant/binary_sensor/camera_motion/front_porch/state"}
+homeassistant/binary_sensor/camera_motion/front_porch/state ON
+homeassistant/binary_sensor/camera_motion/front_yard/config {"name":"front_yard_camera_motion","device_class":"motion","state_topic":"homeassistant/binary_sensor/camera_motion/front_yard/state"}
+homeassistant/binary_sensor/camera_motion/front_yard/state OFF
 ```
 
 Once all changes are done, go ahead and start the daemon
